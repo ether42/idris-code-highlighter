@@ -109,6 +109,54 @@ export total
 HTML : Format
 HTML = MkFormat openTagHTML closeTagHTML escapeHTML preambleHTML postambleHTML
 
+escapeConTeXt : Char -> String
+-- since we can't use a true verbatim mode, the full range of escapes
+-- have to be used...
+escapeConTeXt '#'  = "\\#"
+escapeConTeXt '$'  = "\\textdollar{}"
+escapeConTeXt '%'  = "\\%"
+escapeConTeXt '&'  = "\\&"
+escapeConTeXt '\\' = "\\textbackslash{}"
+escapeConTeXt '^'  = "\\textasciicircum{}"
+escapeConTeXt '_'  = "\\_"
+escapeConTeXt '{'  = "\\{"
+escapeConTeXt '|'  = "\\textbar{}"
+escapeConTeXt '}'  = "\\}"
+escapeConTeXt '~'  = "\\textasciitilde{}"
+-- and a couple more to fix formatting
+escapeConTeXt '\n' = "\\dontleavehmode\n"
+escapeConTeXt ' ' = "\\ "
+escapeConTeXt c = singleton c
+
+private total
+preambleConTeXt : String
+-- ConTeXt MkIV's \definetyping doesn't handle escape=commands anymore
+-- escape=yes or escape={...,...} are problematic because commands may
+--  be embedded
+preambleConTeXt =
+  """\def\IdrisData#1{\color[red]{#1}}
+\def\IdrisType#1{\color[blue]{#1}}
+\def\IdrisBound#1{\color[magenta]{#1}}
+\def\IdrisFunction#1{\color[green]{#1}}
+\def\IdrisKeyword#1{\underbar{#1}}
+\def\IdrisImplicit#1{{\it \IdrisBound{#1}}}
+
+\starttext
+{\obeylines\tt
+"""
+
+private total
+postambleConTeXt : String
+postambleConTeXt =
+  """}
+\stoptext
+"""
+
+||| ConTeXt-style highlights
+export total
+ConTeXt : Format
+ConTeXt = MkFormat openTagTeX closeTagTeX escapeConTeXt preambleConTeXt postambleConTeXt
+
 ------------------------------------
 -- Applying formats to file contents
 ------------------------------------
