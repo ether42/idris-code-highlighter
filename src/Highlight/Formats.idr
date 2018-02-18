@@ -33,6 +33,9 @@ escapeTeX '{'  = "\\{"
 escapeTeX '}'  = "\\}"
 escapeTeX '\\' = "\\textbackslash{}"
 escapeTeX '~'  = "\\textasciitilde{}"
+escapeTeX '|'  = "\\textbar{}"
+escapeTeX '$'  = "\\textdollar{}"
+escapeTeX '%'  = "\\textpercent{}"
 escapeTeX c    = singleton c
 
 private total
