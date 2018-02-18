@@ -16,28 +16,28 @@ record Format where
   postamble : String
 
 private total
-openTagL : HighlightType -> String
-openTagL (Name Function _ _)        = "\\IdrisFunction{"
-openTagL (Name Constructor _ _)     = "\\IdrisData{"
-openTagL (Name TypeConstructor _ _) = "\\IdrisType{"
-openTagL (Bound _)                  = "\\IdrisBound{"
-openTagL Keyword                    = "\\IdrisKeyword{"
+openTagTeX : HighlightType -> String
+openTagTeX (Name Function _ _)        = "\\IdrisFunction{"
+openTagTeX (Name Constructor _ _)     = "\\IdrisData{"
+openTagTeX (Name TypeConstructor _ _) = "\\IdrisType{"
+openTagTeX (Bound _)                  = "\\IdrisBound{"
+openTagTeX Keyword                    = "\\IdrisKeyword{"
 
 private total
-closeTagL : HighlightType -> String
-closeTagL _ = "}"
+closeTagTeX : HighlightType -> String
+closeTagTeX _ = "}"
 
 private total
-escapeL : Char -> String
-escapeL '{'  = "\\{"
-escapeL '}'  = "\\}"
-escapeL '\\' = "\\textbackslash{}"
-escapeL '~'  = "\\textasciitilde{}"
-escapeL c    = singleton c
+escapeTeX : Char -> String
+escapeTeX '{'  = "\\{"
+escapeTeX '}'  = "\\}"
+escapeTeX '\\' = "\\textbackslash{}"
+escapeTeX '~'  = "\\textasciitilde{}"
+escapeTeX c    = singleton c
 
 private total
-preambleL : String
-preambleL =
+preambleLaTeX : String
+preambleLaTeX =
   """\documentclass{article}
 \usepackage{fancyvrb}
 \usepackage[usenames]{xcolor}
@@ -55,8 +55,8 @@ preambleL =
 """
 
 private total
-postambleL : String
-postambleL =
+postambleLaTeX : String
+postambleLaTeX =
   """\end{Verbatim}
 % END CODE
 \end{document}
@@ -65,11 +65,11 @@ postambleL =
 ||| LaTeX-style highlights
 export total
 LaTeX : Format
-LaTeX = MkFormat openTagL closeTagL escapeL preambleL postambleL
+LaTeX = MkFormat openTagTeX closeTagTeX escapeTeX preambleLaTeX postambleLaTeX
 
 private total
-preambleH : String
-preambleH =
+preambleHTML : String
+preambleHTML =
   """<!doctype html><html><head><style>.idris-data { color: red; }
 .idris-type { color: blue; }
 .idris-function {color: green; }
@@ -79,34 +79,34 @@ preambleH =
 .idris-underlined { text-decoration: underline; }</style></head><body><!-- START CODE --><pre>"""
 
 private total
-postambleH : String
-postambleH = "</pre><!-- END CODE --></body></html>"
+postambleHTML : String
+postambleHTML = "</pre><!-- END CODE --></body></html>"
 
 private total
-openTagH : HighlightType -> String
-openTagH (Name Function d t)        = "<span class=\"idris-function\" title=\"" ++ d ++ "\n" ++ t ++ "\">"
-openTagH (Name Constructor d t)     = "<span class=\"idris-data\" title=\"" ++ d ++ "\n" ++ t ++ "\">"
-openTagH (Name TypeConstructor d t) = "<span class=\"idris-type\" title=\"" ++ d ++ "\n" ++ t ++ "\">"
-openTagH (Bound i)                  = "<span class=\"idris-bound" ++
-                                      (if i then " idris-implicit" else "") ++
-                                      "\">"
-openTagH Keyword                    = "<span class=\"idris-keyword\">"
+openTagHTML : HighlightType -> String
+openTagHTML (Name Function d t)        = "<span class=\"idris-function\" title=\"" ++ d ++ "\n" ++ t ++ "\">"
+openTagHTML (Name Constructor d t)     = "<span class=\"idris-data\" title=\"" ++ d ++ "\n" ++ t ++ "\">"
+openTagHTML (Name TypeConstructor d t) = "<span class=\"idris-type\" title=\"" ++ d ++ "\n" ++ t ++ "\">"
+openTagHTML (Bound i)                  = "<span class=\"idris-bound" ++
+                                         (if i then " idris-implicit" else "") ++
+                                         "\">"
+openTagHTML Keyword                    = "<span class=\"idris-keyword\">"
 
 private total
-closeTagH : HighlightType -> String
-closeTagH hl = "</span><!-- closing " ++ show hl ++ "-->"
+closeTagHTML : HighlightType -> String
+closeTagHTML hl = "</span><!-- closing " ++ show hl ++ "-->"
 
 private total
-escapeH : Char -> String
-escapeH '&' = "&amp;"
-escapeH '<' = "&lt;"
-escapeH '>' = "&gt;"
-escapeH c = singleton c
+escapeHTML : Char -> String
+escapeHTML '&' = "&amp;"
+escapeHTML '<' = "&lt;"
+escapeHTML '>' = "&gt;"
+escapeHTML c = singleton c
 
 ||| HTML-style highlights
 export total
 HTML : Format
-HTML = MkFormat openTagH closeTagH escapeH preambleH postambleH
+HTML = MkFormat openTagHTML closeTagHTML escapeHTML preambleHTML postambleHTML
 
 ------------------------------------
 -- Applying formats to file contents

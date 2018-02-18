@@ -65,8 +65,8 @@ doHighlights bn =
               Result src <- readFile idr
                 | FError err => pure (printLn err)
               let hls = sortedHighlights idr xs
-              doHighlight (bn ++ ".tex")  LaTeX src hls
-              doHighlight (bn ++ ".html") HTML  src hls
+              doHighlight (bn ++ ".tex") LaTeX src hls
+              doHighlight (bn ++ ".html") HTML src hls
 
 -------------------------
 -- Figuring out filenames
