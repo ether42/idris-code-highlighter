@@ -184,5 +184,5 @@ highlight fmt fileContents hls =
                closeAll (lineNo !get) (colNo !get) fmt
                modify incLine
                modify (record {colNo = 0})
-               doOutput "\n"
+               doOutput $ escape fmt '\n'
                highlight' lines (unpack l)
