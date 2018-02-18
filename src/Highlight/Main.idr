@@ -67,6 +67,7 @@ doHighlights bn =
               let hls = sortedHighlights idr xs
               doHighlight (bn ++ ".tex") LaTeX src hls
               doHighlight (bn ++ ".html") HTML src hls
+              doHighlight (bn ++ ".ansi") ANSI src hls
 
 -------------------------
 -- Figuring out filenames

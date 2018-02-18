@@ -111,6 +111,23 @@ export total
 HTML : Format
 HTML = MkFormat openTagHTML closeTagHTML escapeHTML preambleHTML postambleHTML
 
+private total
+openTagANSI : HighlightType -> String
+openTagANSI (Name Function _ _)        = "\x1b[32m"
+openTagANSI (Name Constructor _ _)     = "\x1b[31m"
+openTagANSI (Name TypeConstructor _ _) = "\x1b[34m"
+openTagANSI (Bound _)                  = "\x1b[35m"
+openTagANSI Keyword                    = "\x1b[4m"
+
+private total
+closeTagANSI : HighlightType -> String
+closeTagANSI _ = "\x1b[0m"
+
+||| ANSI-style highlights
+export total
+ANSI : Format
+ANSI = MkFormat openTagANSI closeTagANSI singleton "" ""
+
 ------------------------------------
 -- Applying formats to file contents
 ------------------------------------
