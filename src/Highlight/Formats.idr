@@ -29,10 +29,11 @@ closeTagTeX _ = "}"
 
 private total
 escapeLaTeX : Char -> String
+-- Those are the only required because we are in verbatim mode
+-- and they are used to stard a new command
+escapeLaTeX '\\' = "\\textbackslash{}"
 escapeLaTeX '{'  = "\\{"
 escapeLaTeX '}'  = "\\}"
-escapeLaTeX '\\' = "\\textbackslash{}"
-escapeLaTeX '~'  = "\\textasciitilde{}"
 escapeLaTeX c    = singleton c
 
 private total
